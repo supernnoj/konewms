@@ -140,6 +140,9 @@
                     <div class="form-group">
                         <label for="search_part">Search Item</label>
                         <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="mdi mdi-search"></i>
+                            </span>
                             <input id="search_part" type="text" class="form-control"
                                 placeholder="Search by part number or description..." wire:model.defer="searchTerm"
                                 wire:keydown.enter.prevent="searchParts">
