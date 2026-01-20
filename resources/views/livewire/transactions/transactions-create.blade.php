@@ -326,85 +326,70 @@
         </div>
     </div>
 
-    @push('scripts')
-        <script>
-            function initProjectSelect2() {
-                const $el = $('#project_select');
-                if (!$el.length) return;
+   @push('scripts')
+<script data-navigate-once>
+    function initProjectSelect2() {
+        const $el = $('#project_select');
+        if (!$el.length) return;
 
-                if ($el.hasClass('select2-hidden-accessible')) {
-                    $el.select2('destroy');
-                }
-
-                $el.select2({
-                    theme: 'bootstrap',
-                    width: '100%',
-                    placeholder: 'Select a project...',
-                    allowClear: true
-                });
-
-                $el.off('change.project').on('change.project', function() {
-                    const value = $(this).val();
-                    Livewire.find(
-                        document.querySelector('[wire\\:id]').getAttribute('wire:id')
-                    ).set('project_id', value);
-                });
-            }
-
-            function initApproverSelect2() {
-                const $el = $('#approver_select');
-                if (!$el.length) return;
-
-                if ($el.hasClass('select2-hidden-accessible')) {
-                    $el.select2('destroy');
-                }
-
-                $el.select2({
-                    theme: 'bootstrap',
-                    width: '100%',
-                    placeholder: 'Select an approver...',
-                    allowClear: true
-                });
-
-                // sync value to Livewire
-                $el.off('change.approver').on('change.approver', function() {
-                    const value = $(this).val();
-                    Livewire.find(
-                        document.querySelector('[wire\\:id]').getAttribute('wire:id')
-                    ).set('approver_id', value);
-                });
-            }
-
-            function initSelects() {
-                initProjectSelect2();
-                initApproverSelect2();
-            }
-
-            document.addEventListener('DOMContentLoaded', initSelects);
-            document.addEventListener('livewire:load', () => {
-                initSelects();
-
-                Livewire.hook('message.processed', (message, component) => {
-                    initSelects();
-                });
+        // Only initialize once
+        if (!$el.hasClass('select2-hidden-accessible')) {
+            $el.select2({
+                theme: 'bootstrap',
+                width: '100%',
+                placeholder: 'Select a project...',
+                allowClear: true
             });
+        }
 
-            document.addEventListener('DOMContentLoaded', initSelects);
-            document.addEventListener('livewire:update', initSelects);
+        // Re-bind change handler
+        $el.off('change.project').on('change.project', function () {
+            const value = $(this).val();
+            Livewire.find(document.querySelector('[wire\\:id]').getAttribute('wire:id'))
+                .set('project_id', value);
+        });
+    }
 
-            // after successful save, Livewire emits this event
-            document.addEventListener('project-select-reset', function() {
-                const $project = $('#project_select');
-                const $approver = $('#approver_select');
+    function initApproverSelect2() {
+        const $el = $('#approver_select');
+        if (!$el.length) return;
 
-                if ($project.length) {
-                    $project.val(null).trigger('change');
-                }
-                if ($approver.length) {
-                    $approver.val(null).trigger('change');
-                }
+        if (!$el.hasClass('select2-hidden-accessible')) {
+            $el.select2({
+                theme: 'bootstrap',
+                width: '100%',
+                placeholder: 'Select an approver...',
+                allowClear: true
             });
-        </script>
-    @endpush
+        }
+
+        $el.off('change.approver').on('change.approver', function () {
+            const value = $(this).val();
+            Livewire.find(document.querySelector('[wire\\:id]').getAttribute('wire:id'))
+                .set('approver_id', value);
+        });
+    }
+
+    function initSelects() {
+        initProjectSelect2();
+        initApproverSelect2();
+    }
+
+    document.addEventListener('livewire:load', () => {
+        initSelects();
+        Livewire.hook('message.processed', () => initSelects());
+    });
+
+    document.addEventListener('livewire:navigated', () => {
+        initSelects();
+    });
+
+    document.addEventListener('project-select-reset', function () {
+        $('#project_select').val(null).trigger('change');
+        $('#approver_select').val(null).trigger('change');
+    });
+</script>
+@endpush
+
 
 </div>

@@ -69,19 +69,19 @@
                             </div>
                         </div>
                         <div class="d-flex mb-1">
+                            <div style="width: 70px;">Equip. no. :</div>
+                            <div class="flex-grow-1 border-bottom">
+                                {{ $equipment_number }}
+                            </div>
+                        </div>
+                        <div class="d-flex mb-1">
                             <div style="width: 70px;">Date :</div>
                             <div class="flex-grow-1 border-bottom">
                                 {{ now()->format('F j, Y') }}
                             </div>
                         </div>
                         <div class="d-flex mb-1">
-                            <div style="width: 70px;">Equip No. :</div>
-                            <div class="flex-grow-1 border-bottom">
-                                {{ $equipment_number }}
-                            </div>
-                        </div>
-                        <div class="d-flex mb-1">
-                            <div style="width: 70px;">PO No. :</div>
+                            <div style="width: 70px;">PO no. :</div>
                             <div class="flex-grow-1 border-bottom">
                                 {{ $po_number }}
                             </div>

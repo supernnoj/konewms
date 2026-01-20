@@ -63,6 +63,7 @@
             background-color: #1450f5;
             border-color: #1450f5;
         }
+        
     </style>
 
     @livewireStyles

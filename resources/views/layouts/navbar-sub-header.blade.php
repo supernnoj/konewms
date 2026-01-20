@@ -42,7 +42,7 @@
                                         class="icon mdi mdi-view-list-alt"></span><span class="name">List of All
                                         Transactions</span></a>
                             </li>
-                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('transactions.create') ? 'active' : '' }}" href="{{ route('transactions.create') }}" wire:navigate><span
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('transactions.create') ? 'active' : '' }}" href="{{ route('transactions.create') }}"><span
                                         class="icon mdi mdi-plus-square"></span><span class="name">Create New
                                         Transaction</span></a>
                             </li>
