@@ -23,7 +23,7 @@ var App = (function () {
     //Select2
     $(".select2").select2({
       width: '100%',
-      placeholder: 'Select a state'
+      placeholder: 'Select an option'
     });
 
     //Select2 tags

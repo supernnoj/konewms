@@ -15,6 +15,11 @@
     <link rel="stylesheet" type="text/css"
         href="{{ asset('assets/lib/material-design-icons/css/material-design-iconic-font.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/lib/sweetalert2/sweetalert2.min.css') }}" />
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('assets/lib/datetimepicker/css/bootstrap-datetimepicker.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/lib/select2/css/select2.min.css') }}" />
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('assets/lib/bootstrap-slider/css/bootstrap-slider.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/app.css') }}" />
 
     <!-- Additional imports -->
@@ -115,15 +120,16 @@
                                                     </a></div>
                                                 <div class="user"><a href="#"><img src="assets/img/avatar3.png"
                                                             alt="Avatar">
-                                                        <div class="user-data"><span class="status offline"></span><span
+                                                        <div class="user-data"><span
+                                                                class="status offline"></span><span
                                                                 class="name">Joel King </span><span
                                                                 class="message">Ready for the meeti...</span></div>
                                                     </a></div>
                                             </div>
                                             <h2>Contacts</h2>
                                             <div class="contact-list">
-                                                <div class="user"><a href="#"><img src="assets/img/avatar4.png"
-                                                            alt="Avatar">
+                                                <div class="user"><a href="#"><img
+                                                            src="assets/img/avatar4.png" alt="Avatar">
                                                         <div class="user-data2"><span class="status"></span><span
                                                                 class="name">Mike Bolthort</span></div>
                                                     </a></div>
@@ -399,6 +405,15 @@
     <script src="{{ asset('assets/js/app-megamenu.js') }}" type="text/javascript"></script>
     {{-- <script src="{{ asset('assets/lib/sweetalert2/sweetalert2.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/app-ui-sweetalert2.js') }}" type="text/javascript"></script> --}}
+    <script src="{{ asset('assets/lib/jquery.nestable/jquery.nestable.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/lib/moment.js/min/moment.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript">
+    </script>
+    <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/lib/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/lib/bootstrap-slider/bootstrap-slider.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/app-form-elements.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/lib/bs-custom-file-input/bs-custom-file-input.js') }}" type="text/javascript"></script>
 
     <!-- Initialize scripts -->
     <script type="text/javascript">
@@ -406,6 +421,8 @@
             //initialize the javascript
             App.init();
             App.megaMenu();
+
+            App.formElements();
 
             //Runs prettify
             prettyPrint();

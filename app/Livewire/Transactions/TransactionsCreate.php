@@ -8,6 +8,8 @@ use App\Models\Transaction;
 use App\Models\Cart;
 use App\Models\ContractType;
 use App\Models\Inventory;
+use App\Models\Project;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -15,20 +17,35 @@ class TransactionsCreate extends Component
 {
     public $contractTypes = [];
 
+    public $projectSearch = '';
+    public $projectSuggestions = [];
+    public $project_id = null;
     public $project_name = '';
+    public $project_address = '';
+
+    public $equipment_number = '';
+
     public $contract_type_id = null;
     public $po_number = '';
+
+    public $approvers = [];
+    public $approver_id;
+    public $approver_name = '';
 
     public $searchTerm = '';
     public $searchResults = [];
     public $cartItems = [];
+    public $fulfillment = 'complete';
 
     protected function rules()
     {
         return [
-            'project_name' => 'required|string|max:255',
+            'project_id' => 'required|exists:projects,id',
             'contract_type_id' => 'required|exists:contract_types,id',
             'po_number' => 'required|string|max:255',
+            'equipment_number' => 'nullable|string|max:255',
+            'fulfillment' => 'required|in:partial,complete',
+            'approver_id' => 'required|exists:users,id',
             'cartItems' => 'required|array|min:1',
             'cartItems.*.id' => 'required|exists:inventories,id',
             'cartItems.*.release_qty' => 'required|integer|min:1',
@@ -38,15 +55,68 @@ class TransactionsCreate extends Component
     protected function headerRules()
     {
         return [
-            'project_name' => 'required|string|max:255',
+            'project_id' => 'required|exists:projects,id',
             'contract_type_id' => 'required|exists:contract_types,id',
             'po_number' => 'required|string|max:255',
+            'equipment_number' => 'nullable|string|max:255',
+            'fulfillment' => 'required|in:partial,complete',
+            'approver_id' => 'required|exists:users,id',
         ];
     }
 
     public function mount()
     {
         $this->contractTypes = ContractType::orderBy('name')->get();
+        $this->approvers = User::orderBy('name')->get();
+        // $this->approvers = User::where('role', 'approver')->get();
+    }
+
+    public function updatedProjectSearch()
+    {
+        $term = trim($this->projectSearch);
+
+        if ($term === '') {
+            $this->projectSuggestions = [];
+            $this->project_id = null;
+            return;
+        }
+
+        $this->projectSuggestions = Project::query()
+            ->where('name', 'like', "%{$term}%")
+            ->orderBy('name')
+            ->limit(10)
+            ->get()
+            ->toArray();
+    }
+
+    public function selectProject($projectId)
+    {
+        $project = Project::find($projectId);
+
+        if (!$project) {
+            return;
+        }
+
+        $this->project_id = $project->id;
+        $this->projectSearch = $project->name;
+        $this->project_name = $project->name;
+        $this->project_address = $project->address ?? '';
+        $this->projectSuggestions = [];
+    }
+
+    public function updatedProjectId($value)
+    {
+        $project = Project::find($value);
+
+        $this->projectSearch = $project?->name ?? '';
+        $this->project_name = $project?->name ?? '';
+        $this->project_address = $project?->address ?? '';
+    }
+
+    public function updatedApproverId($value)
+    {
+        $user = User::find($value);
+        $this->approver_name = $user?->name ?? '';
     }
 
     // 1 & 2: run when user presses Enter or clicks Search
@@ -131,11 +201,14 @@ class TransactionsCreate extends Component
 
         DB::transaction(function () use (&$transactionId) {
             $transaction = Transaction::create([
-                'project_name' => $this->project_name,
+                'project_id' => $this->project_id,
                 'contract_type_id' => $this->contract_type_id,
                 'po_number' => $this->po_number,
+                'equipment_number' => $this->equipment_number,
+                'fulfillment' => $this->fulfillment,
                 'reference_number' => null,
                 'created_by' => Auth::id(),
+                'approver_id' => $this->approver_id,
             ]);
 
             $transactionId = $transaction->id;
@@ -148,7 +221,21 @@ class TransactionsCreate extends Component
                 ]);
             }
 
-            $this->reset('project_name', 'contract_type_id', 'po_number', 'searchTerm', 'searchResults', 'cartItems');
+            $this->reset(
+                'projectSearch',
+                'project_id',
+                'project_name',
+                'project_address',
+                'equipment_number',
+                'contract_type_id',
+                'po_number',
+                'fulfillment',
+                'searchTerm',
+                'searchResults',
+                'cartItems',
+                'approver_id',
+                'approver_name'
+            );
         });
 
         $this->dispatch('close-checkout-modal');
@@ -159,6 +246,8 @@ class TransactionsCreate extends Component
             'pdfUrl' => route('transaction.delivery-receipt', $transactionId),
         ]);
 
+        // notify JS to clear Select2
+        $this->dispatch('project-select-reset');
     }
 
     public function render()

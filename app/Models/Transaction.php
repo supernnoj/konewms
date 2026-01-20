@@ -10,14 +10,22 @@ class Transaction extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'project_name',
+        'project_id',
         'contract_type_id',
         'po_number',
+        'equipment_number',
+        'fulfillment',
         'reference_number',
         'created_by',
+        'approver_id',
         'deleted_by',
         'reason_for_delete',
     ];
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 
     public function contractType()
     {
@@ -31,6 +39,10 @@ class Transaction extends Model
 
     public function createdBy()
     {
-        return $this->belongsTo(User::class, 'created_by');  // foreign key column
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approver_id');
     }
 }

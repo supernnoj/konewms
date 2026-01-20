@@ -24,14 +24,22 @@
 
                 <div class="card-body">
                     <form action="#" method="POST" data-parsley-validate novalidate>
-                        {{-- Project Name --}}
+                        {{-- Project (Select2) --}}
                         <div class="form-group">
-                            <label for="project_name">Project Name <span class="text-danger">*</span></label>
-                            <input id="project_name" name="project_name" type="text" class="form-control" required
-                                data-parsley-trigger="change" placeholder="e.g. Warehouse Expansion Phase 1"
-                                wire:model.defer="project_name">
+                            <label>Project <span class="text-danger">*</span></label>
 
-                            @error('project_name')
+                            <div wire:ignore>
+                                <select id="project_select" class="select2 form-control">
+                                    <option value="">Select a project...</option>
+                                    @foreach (\App\Models\Project::orderBy('name')->get() as $project)
+                                        <option value="{{ $project->id }}" @selected($project->id == $project_id)>
+                                            {{ $project->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            @error('project_id')
                                 <div class="parsley-errors-list filled mt-1">
                                     This is a required field.
                                 </div>
@@ -71,6 +79,14 @@
                                 </div>
                             @enderror
                         </div>
+
+                        {{-- Equipment Number --}}
+                        <div class="form-group">
+                            <label for="equipment_number">Equipment Number <span class="text-danger">*</span></label>
+                            <input id="equipment_number" name="equipment_number" type="text" class="form-control"
+                                placeholder="e.g. EQ-12345" wire:model.defer="equipment_number">
+                        </div>
+
 
                         {{-- Automatic Timestamp --}}
                         <div class="form-group">
@@ -167,7 +183,7 @@
                                         <span class="text-muted">
                                             {{ $item['description'] }}
                                             @if (!empty($item['unit_of_measurement']))
-                                                • {{ $item['unit_of_measurement'] }}
+                                                • {{ $item['quantity'] }} {{ $item['unit_of_measurement'] }}
                                             @endif
                                         </span>
                                     </div>
@@ -244,19 +260,151 @@
                         </span>
                     </div>
 
+                    <div class="d-flex justify-content-center align-items-center mt-2">
+                        <div class="btn-group" role="group" aria-label="Fulfillment">
+                            <button type="button"
+                                class="btn {{ $fulfillment === 'partial' ? 'btn-primary' : 'btn-outline-primary' }}"
+                                wire:click="$set('fulfillment','partial')">
+                                Partial
+                            </button>
+                            <button type="button"
+                                class="btn {{ $fulfillment === 'complete' ? 'btn-primary' : 'btn-outline-primary' }}"
+                                wire:click="$set('fulfillment','complete')">
+                                Complete
+                            </button>
+                        </div>
+                        @error('fulfillment')
+                            <div class="text-danger small mt-1">
+                                Please choose Partial or Complete.
+                            </div>
+                        @enderror
+                    </div>
+
+                    {{-- Divider between selected items and approver --}}
+                    <div class="d-flex align-items-center my-3 mt-7">
+                        <div class="flex-grow-1 border-top" style="border-top-color: #e0e0e0;"></div>
+                        <span class="px-2 font-weight-bold"
+                            style="font-size: 11px; text-transform: uppercase; letter-spacing: .08em;">
+                            APPROVED BY
+                        </span>
+                        <div class="flex-grow-1 border-top" style="border-top-color: #e0e0e0;"></div>
+                    </div>
+
+                    {{-- Approver (Select2) --}}
+                    <div class="form-group">
+                        <label>Approver <span class="text-danger">*</span></label>
+
+                        <div wire:ignore>
+                            <select id="approver_select" class="select2 form-control">
+                                <option value="">Select an option</option>
+                                @foreach ($approvers as $approver)
+                                    <option value="{{ $approver->id }}" @selected($approver->id == $approver_id)>
+                                        {{ $approver->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        @error('approver_id')
+                            <div class="parsley-errors-list filled mt-1">
+                                This is a required field.
+                            </div>
+                        @enderror
+                    </div>
+
                     <hr class="mt-3 mb-2">
 
                     <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary" wire:click="openCheckout"
+                        <button type="button" class="btn btn-primary btn-lg" wire:click="openCheckout"
                             @disabled(!count($cartItems))>
                             Checkout
                         </button>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
-
     </div>
+
+    @push('scripts')
+        <script>
+            function initProjectSelect2() {
+                const $el = $('#project_select');
+                if (!$el.length) return;
+
+                if ($el.hasClass('select2-hidden-accessible')) {
+                    $el.select2('destroy');
+                }
+
+                $el.select2({
+                    theme: 'bootstrap',
+                    width: '100%',
+                    placeholder: 'Select a project...',
+                    allowClear: true
+                });
+
+                $el.off('change.project').on('change.project', function() {
+                    const value = $(this).val();
+                    Livewire.find(
+                        document.querySelector('[wire\\:id]').getAttribute('wire:id')
+                    ).set('project_id', value);
+                });
+            }
+
+            function initApproverSelect2() {
+                const $el = $('#approver_select');
+                if (!$el.length) return;
+
+                if ($el.hasClass('select2-hidden-accessible')) {
+                    $el.select2('destroy');
+                }
+
+                $el.select2({
+                    theme: 'bootstrap',
+                    width: '100%',
+                    placeholder: 'Select an approver...',
+                    allowClear: true
+                });
+
+                // sync value to Livewire
+                $el.off('change.approver').on('change.approver', function() {
+                    const value = $(this).val();
+                    Livewire.find(
+                        document.querySelector('[wire\\:id]').getAttribute('wire:id')
+                    ).set('approver_id', value);
+                });
+            }
+
+            function initSelects() {
+                initProjectSelect2();
+                initApproverSelect2();
+            }
+
+            document.addEventListener('DOMContentLoaded', initSelects);
+            document.addEventListener('livewire:load', () => {
+                initSelects();
+
+                Livewire.hook('message.processed', (message, component) => {
+                    initSelects();
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', initSelects);
+            document.addEventListener('livewire:update', initSelects);
+
+            // after successful save, Livewire emits this event
+            document.addEventListener('project-select-reset', function() {
+                const $project = $('#project_select');
+                const $approver = $('#approver_select');
+
+                if ($project.length) {
+                    $project.val(null).trigger('change');
+                }
+                if ($approver.length) {
+                    $approver.val(null).trigger('change');
+                }
+            });
+        </script>
+    @endpush
 
 </div>

@@ -74,7 +74,7 @@
                         @forelse($transactions as $transaction)
                             <tr>
                                 <td>{{ $transaction->id }}</td>
-                                <td>{{ $transaction->project_name }}</td>
+                                <td>{{ $transaction->project->name }}</td>
                                 <td>{{ $transaction->contractType->name ?? 'N/A' }}</td>
                                 <td>{{ $transaction->po_number }}</td>
                                 <td>Null</td>

@@ -16,6 +16,7 @@ class Inventory extends Model
         'description',
         'category',
         'quantity',
+        'location',
         'unit_of_measurement',
         'created_by',
         'deleted_by',

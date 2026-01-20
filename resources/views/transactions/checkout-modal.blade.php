@@ -59,13 +59,13 @@
                         <div class="d-flex mb-1">
                             <div style="width: 70px;">Deliver to :</div>
                             <div class="flex-grow-1 border-bottom">
-                                {{ $project_name ?? '' }}
+                                {{ $project_name }}
                             </div>
                         </div>
                         <div class="d-flex mb-1">
                             <div style="width: 70px;">Address :</div>
                             <div class="flex-grow-1 border-bottom">
-
+                                {{ $project_address }}
                             </div>
                         </div>
                         <div class="d-flex mb-1">
@@ -75,7 +75,13 @@
                             </div>
                         </div>
                         <div class="d-flex mb-1">
-                            <div style="width: 70px;">PO no. :</div>
+                            <div style="width: 70px;">Equip No. :</div>
+                            <div class="flex-grow-1 border-bottom">
+                                {{ $equipment_number }}
+                            </div>
+                        </div>
+                        <div class="d-flex mb-1">
+                            <div style="width: 70px;">PO No. :</div>
                             <div class="flex-grow-1 border-bottom">
                                 {{ $po_number }}
                             </div>
@@ -142,12 +148,26 @@
                 <div class="row mt-2">
                     <div class="col-6">
                         <p class="mb-4">
-                            Partial&nbsp;&nbsp;(&emsp;) <br> Complete&nbsp;&nbsp;(&emsp;)
+                            Partial&nbsp;&nbsp;(
+                            @if ($fulfillment === 'partial')
+                                ✔
+                            @endif
+                            )<br>
+
+                            Complete&nbsp;&nbsp;(
+                            @if ($fulfillment === 'complete')
+                                ✔
+                            @endif
+                            )
                         </p>
+
                         <p class="mb-0">
                             Approved by:
                         </p>
-                        <div class="border-bottom" style="margin-top: 16px;"></div>
+                        <div class="border-bottom" style="margin-top: 14px;">
+                            {{ $approver_name }}
+                        </div>
+                        {{-- <div class="border-bottom" style="margin-top: 16px;"></div> --}}
                     </div>
                     <div class="col-6">
                         <p class="mb-1 text-bold">

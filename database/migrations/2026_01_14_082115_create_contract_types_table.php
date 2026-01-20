@@ -22,6 +22,8 @@ return new class extends Migration {
             ['name' => 'Standard', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Plus', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Premium', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Warranty', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Testing ', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 
