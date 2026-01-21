@@ -38,7 +38,7 @@
                             aria-expanded="false"><span
                                 class="icon mdi mdi-swap-vertical"></span><span>Transactions</span></a>
                         <ul class="be-nav-tabs-sub be-sub-nav nav">
-                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('transactions.list') ? 'active' : '' }}" href="{{ route('transactions.list') }}" wire:navigate><span
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('transactions.list') ? 'active' : '' }}" href="{{ route('transactions.list') }}"><span
                                         class="icon mdi mdi-view-list-alt"></span><span class="name">List of All
                                         Transactions</span></a>
                             </li>
