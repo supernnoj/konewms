@@ -25,7 +25,7 @@
                         <ul class="be-nav-tabs-sub be-sub-nav nav">
                             <li class="nav-item"><a
                                     class="nav-link {{ request()->routeIs('inventory.list') ? 'active' : '' }}"
-                                    href="{{ route('inventory.list') }}" wire:navigate><span class="name"><span
+                                    href="{{ route('inventory.list') }}"><span class="name"><span
                                             class="icon mdi mdi-view-list-alt"></span>List of All Items</span></a>
                             </li>
                             <li class="nav-item"><a class="nav-link {{ request()->routeIs('inventory.create') ? 'active' : '' }}" href="{{ route('inventory.create') }}" wire:navigate><span

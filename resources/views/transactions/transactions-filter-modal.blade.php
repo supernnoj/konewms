@@ -4,22 +4,23 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header mt-2 mb-2">
-               <table cellpadding="0" cellspacing="0" border="0">
-                        <tr>
-                            <td width="120" align="center" valign="middle" style="padding:10px 20px 10px 30px;">
-                                <img src="{{ asset('assets/img/kone.png') }}" alt="KONE" style="height:40px;">
-                            </td>
-                            <td align="left" valign="middle">
-                                <div style="font-size:10px; color:#444; letter-spacing:2px; font-family: Arial, Helvetica, sans-serif; font-weight:500; margin-bottom:2px;">
-                                    WAREHOUSE MONITORING SYSTEM
-                                </div>
-                                <div class="text-uppercase"
-                                    style="font-size:25px; font-weight:bold; color:#333; font-family: Arial, Helvetica, sans-serif; letter-spacing:1px; margin-top:5px;">
-                                   TRANSACTIONS FILTER
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td width="120" align="center" valign="middle" style="padding:10px 20px 10px 30px;">
+                            <img src="{{ asset('assets/img/kone.png') }}" alt="KONE" style="height:40px;">
+                        </td>
+                        <td align="left" valign="middle">
+                            <div
+                                style="font-size:10px; color:#444; letter-spacing:2px; font-family: Arial, Helvetica, sans-serif; font-weight:500; margin-bottom:2px;">
+                                WAREHOUSE MONITORING SYSTEM
+                            </div>
+                            <div class="text-uppercase"
+                                style="font-size:25px; font-weight:bold; color:#333; font-family: Arial, Helvetica, sans-serif; letter-spacing:1px; margin-top:5px;">
+                                TRANSACTIONS FILTER
+                            </div>
+                        </td>
+                    </tr>
+                </table>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

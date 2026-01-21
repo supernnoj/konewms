@@ -1,4 +1,6 @@
 <div>
+    @include('inventory.inventory-filters-modal')
+
     <div class="card card-border-color card-border-color-primary" id="inventory-list">
         <div class="card-header card-header-divider">
             Warehouse Items
@@ -6,11 +8,10 @@
         </div>
 
         <div class="card-body">
-            <form wire:submit.prevent="submitFilters">
-                <div class="row g-2 align-items-end">
-                    {{-- Search --}}
-                    <div class="col-md-4">
-                        <label class="form-label mb-1">Search</label>
+            <div class="d-flex justify-content-between align-items-end mb-2">
+                <div class="flex-grow-1 mr-3">
+                    <label class="form-label mb-1">Search</label>
+                    <form wire:submit.prevent="submitFilters">
                         <div class="input-group">
                             <span class="input-group-text">
                                 <i class="mdi mdi-search"></i>
@@ -21,37 +22,27 @@
                                 Search
                             </button>
                         </div>
-                    </div>
+                    </form>
+                </div>
 
-                    {{-- Category (instant) --}}
-                    <div class="col-md-2">
-                        <label class="form-label mb-1">Category</label>
-                        <select class="form-control" wire:model.live="category_id">
-                            <option value="">All categories</option>
-                            @foreach ($categories as $cat)
-                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="text-right">
+                    <label class="form-label mb-1">&nbsp;</label>
 
-                    {{-- Date range (instant) --}}
-                    {{-- <div class="col-md-2">
-                        <label class="form-label mb-1">Created from</label>
-                        <input type="date" class="form-control" wire:model.live="dateFrom">
-                    </div>
-
-                    <div class="col-md-2 mt-2 mt-md-0">
-                        <label class="form-label mb-1">Created to</label>
-                        <input type="date" class="form-control" wire:model.live="dateTo">
-                    </div> --}}
-
-                    <div class="col-md-6 text-right">
-                        <button type="button" class="btn btn-primary" wire:click="clearFilters">
-                            Reset
+                    <div class="d-flex align-items-center justify-content-end">
+                        <button type="button" class="btn btn-space btn-outline-primary"
+                            wire:click="$dispatch('open-inventory-filters-modal')">
+                            <i class="icon icon-left mdi mdi-filter-list"></i> Filters
                         </button>
+
+                        @if ($this->activeFilterCount > 0)
+                            <span class="badge badge-primary ml-2">
+                                {{ $this->activeFilterCount }} filter{{ $this->activeFilterCount > 1 ? 's' : '' }}
+                                applied
+                            </span>
+                        @endif
                     </div>
                 </div>
-            </form>
+            </div>
 
             {{-- Table --}}
             <div class="table-responsive mt-3">
@@ -59,12 +50,12 @@
                     <thead class="thead-primary">
                         <tr>
                             {{-- <th style="width: 70px;">ID</th> --}}
-                            <th style="width: 60px;">#</th>
+                            <th class="text-center" style="width: 40px;">#</th>
                             <th style="width: 140px;">Part No.</th>
                             <th>Description</th>
                             <th style="width: 140px;">Category</th>
-                            <th style="width: 120px;">Qty</th>
-                            <th style="width: 140px;">UoM</th>
+                            <th class="text-center" style="width: 120px;">Qty</th>
+                            <th class="text-center" style="width: 120px;">UoM</th>
                             <th style="width: 140px;">Location</th>
                             {{-- <th style="width: 180px;">Created at</th> --}}
                         </tr>
@@ -73,12 +64,12 @@
                         @forelse($inventories as $inventory)
                             <tr>
                                 {{-- <td>{{ $inventory->id }}</td> --}}
-                                <td>count</td>
+                                <td class="text-center">{{ $inventories->firstItem() + $loop->index }}</td>
                                 <td>{{ $inventory->part_no }}</td>
                                 <td>{{ $inventory->description }}</td>
                                 <td>{{ $inventory->category->name ?? 'Null' }}</td>
-                                <td>{{ $inventory->quantity }}</td>
-                                <td>{{ $inventory->unit_of_measurement ?? 'Null' }}</td>
+                                <td class="text-center">{{ $inventory->quantity }}</td>
+                                <td class="text-center">{{ $inventory->unit_of_measurement ?? 'Null' }}</td>
                                 <td>{{ $inventory->location ?? 'Null' }}</td>
                                 {{-- <td>
                                     {{ $inventory->created_at ? $inventory->created_at->format('F j, Y h:i A') : 'N/A' }}
