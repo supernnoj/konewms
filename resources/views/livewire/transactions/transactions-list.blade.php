@@ -1,5 +1,6 @@
 <div>
     @include('transactions.transactions-filter-modal')
+    @include('transactions.transactions-view-dr-modal')
 
     <div class="card card-border-color card-border-color-primary" id="transactions-list">
         <div class="card-header card-header-divider">
@@ -60,7 +61,7 @@
                     </thead>
                     <tbody>
                         @forelse($transactions as $transaction)
-                            <tr>
+                            <tr style="cursor:pointer;" wire:click="openViewDrModal({{ $transaction->id }})">
                                 <td class="text-center">{{ str_pad($transaction->id, 4, '0', STR_PAD_LEFT) }}</td>
                                 <td>{{ $transaction->project->name }}</td>
                                 <td class="text-center">{{ $transaction->contractType->name ?? 'Null' }}</td>

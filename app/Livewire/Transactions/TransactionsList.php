@@ -25,6 +25,48 @@ class TransactionsList extends Component
     public $dateFrom = '';
     public $dateTo = '';
 
+    // DR view modal data
+    public ?int $viewDrId = null;
+    public array $viewDrItems = [];
+
+    public string $view_project_name = '';
+    public string $view_project_address = '';
+    public string $view_equipment_number = '';
+    public string $view_po_number = '';
+    public ?int $view_contract_type_id = null;
+    public string $view_fulfillment = '';
+    public string $view_approver_name = '';
+
+    public function openViewDrModal(int $transactionId)
+    {
+        $transaction = Transaction::with(['project', 'contractType', 'approver', 'carts.inventory'])->findOrFail($transactionId);
+
+        $this->viewDrId = $transaction->id;
+        $this->view_project_name = $transaction->project->name;
+        $this->view_project_address = $transaction->project->address;
+        $this->view_equipment_number = $transaction->equipment_number;
+        $this->view_po_number = $transaction->po_number;
+        $this->view_contract_type_id = $transaction->contract_type_id;
+        $this->view_fulfillment = $transaction->fulfillment ?? '';
+        $this->view_approver_name = optional($transaction->approver)->name ?? '';
+        $this->viewCreatedAt = $transaction->created_at->format('F j, Y');
+
+        // Map Cart rows into items for the DR table
+        $this->viewDrItems = $transaction->carts
+            ->map(function ($cart) {
+                return [
+                    'qty' => $cart->release_qty,
+                    'part_no' => optional($cart->inventory)->part_no ?? '',
+                    'description' => optional($cart->inventory)->description ?? '',
+                    'uom' => optional($cart->inventory)->uom ?? '',
+                ];
+            })
+            ->values()
+            ->toArray();
+
+        $this->dispatch('open-view-dr-modal');
+    }
+
     public function submitFilters()
     {
         $this->search = $this->searchInput;
