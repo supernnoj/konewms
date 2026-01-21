@@ -10,7 +10,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-end mb-2">
                 <div class="flex-grow-1 mr-3">
-                    <label class="form-label mb-1">Search</label>
+                    <label class="form-label mb-1">Search and filters</label>
                     <form wire:submit.prevent="submitFilters">
                         <div class="input-group">
                             <span class="input-group-text">
