@@ -15,7 +15,7 @@
                             <span class="input-group-text">
                                 <i class="mdi mdi-search"></i>
                             </span>
-                            <input type="text" class="form-control" placeholder="Part no. or description..."
+                            <input type="text" class="form-control" placeholder="Search by Part No. or Description"
                                 wire:model="searchInput">
                             <button type="submit" class="btn btn-primary">
                                 Search
@@ -26,10 +26,10 @@
                     {{-- Category (instant) --}}
                     <div class="col-md-2">
                         <label class="form-label mb-1">Category</label>
-                        <select class="form-control" wire:model.live="category">
+                        <select class="form-control" wire:model.live="category_id">
                             <option value="">All categories</option>
                             @foreach ($categories as $cat)
-                                <option value="{{ $cat }}">{{ $cat }}</option>
+                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -58,24 +58,28 @@
                 <table class="table table-striped table-hover table-bordered mb-0">
                     <thead class="thead-primary">
                         <tr>
-                            <th style="width: 70px;">ID</th>
-                            <th style="width: 140px;">Part no.</th>
+                            {{-- <th style="width: 70px;">ID</th> --}}
+                            <th style="width: 60px;">#</th>
+                            <th style="width: 140px;">Part No.</th>
                             <th>Description</th>
                             <th style="width: 140px;">Category</th>
                             <th style="width: 120px;">Qty</th>
                             <th style="width: 140px;">UoM</th>
+                            <th style="width: 140px;">Location</th>
                             {{-- <th style="width: 180px;">Created at</th> --}}
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($inventories as $inventory)
                             <tr>
-                                <td>{{ $inventory->id }}</td>
+                                {{-- <td>{{ $inventory->id }}</td> --}}
+                                <td>count</td>
                                 <td>{{ $inventory->part_no }}</td>
                                 <td>{{ $inventory->description }}</td>
-                                <td>{{ $inventory->category ?? 'N/A' }}</td>
+                                <td>{{ $inventory->category->name ?? 'Null' }}</td>
                                 <td>{{ $inventory->quantity }}</td>
-                                <td>{{ $inventory->unit_of_measurement }}</td>
+                                <td>{{ $inventory->unit_of_measurement ?? 'Null' }}</td>
+                                <td>{{ $inventory->location ?? 'Null' }}</td>
                                 {{-- <td>
                                     {{ $inventory->created_at ? $inventory->created_at->format('F j, Y h:i A') : 'N/A' }}
                                 </td> --}}

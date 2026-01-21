@@ -15,6 +15,10 @@ Route::get('/inventory/list', function () {
     return view('inventory.inventory-list');
 })->name('inventory.list');
 
+Route::get('/inventory/create', function () {
+    return view('inventory.inventory-create');
+})->name('inventory.create');
+
 Route::get('/transactions/list', function () {
     return view('transactions.transactions-list');
 })->name('transactions.list');

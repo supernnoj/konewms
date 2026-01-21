@@ -11,15 +11,9 @@ class Inventory extends Model
 
     protected $table = 'inventories';
 
-    protected $fillable = [
-        'part_no',
-        'description',
-        'category',
-        'quantity',
-        'location',
-        'unit_of_measurement',
-        'created_by',
-        'deleted_by',
-        'reason_for_delete',
-    ];
+    protected $fillable = ['part_no', 'description', 'category_id', 'quantity', 'location', 'unit_of_measurement', 'created_by', 'deleted_by', 'reason_for_delete'];
+    public function category()
+    {
+        return $this->belongsTo(InventoryCategory::class, 'category_id');
+    }
 }

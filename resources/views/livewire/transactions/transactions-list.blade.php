@@ -17,7 +17,7 @@
                             <span class="input-group-text">
                                 <i class="mdi mdi-search"></i>
                             </span>
-                            <input type="text" class="form-control" placeholder="Type a keyword..."
+                            <input type="text" class="form-control" placeholder="Search by DR No., Project Name, PO No., or Equipment No."
                                 wire:model="searchInput">
                             <button type="submit" class="btn btn-primary">Search</button>
                         </div>

@@ -19,7 +19,7 @@
                         </ul>
                     </li>
                     <li
-                        class="nav-item parent {{ request()->routeIs('inventory.list') ? 'open section-active' : '' }}">
+                        class="nav-item parent {{ request()->routeIs(['inventory.list', 'inventory.create']) ? 'open section-active' : '' }}">
                         <a class="nav-link" href="#" role="button" aria-expanded="false"><span
                                 class="icon mdi mdi-dropbox"></span><span>Inventory</span></a>
                         <ul class="be-nav-tabs-sub be-sub-nav nav">
@@ -28,7 +28,7 @@
                                     href="{{ route('inventory.list') }}" wire:navigate><span class="name"><span
                                             class="icon mdi mdi-view-list-alt"></span>List of All Items</span></a>
                             </li>
-                            <li class="nav-item"><a class="nav-link" href="form-validation.html"><span
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('inventory.create') ? 'active' : '' }}" href="{{ route('inventory.create') }}" wire:navigate><span
                                         class="name"><span class="icon mdi mdi-plus-square"></span>Add New
                                         Item</span></a>
                             </li>

@@ -3,6 +3,7 @@
 namespace App\Livewire\Inventory;
 
 use App\Models\Inventory;
+use App\Models\InventoryCategory;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,12 +13,10 @@ class InventoryList extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    // Search (only via submit)
     public $searchInput = '';
     public $search = '';
 
-    // Instant filters
-    public $category = '';
+    public $category_id = '';   // was $category
     public $dateFrom = '';
     public $dateTo = '';
 
@@ -32,7 +31,7 @@ class InventoryList extends Component
         $this->reset([
             'searchInput',
             'search',
-            'category',
+            'category_id',
             'dateFrom',
             'dateTo',
         ]);
@@ -42,7 +41,7 @@ class InventoryList extends Component
 
     public function render()
     {
-        $inventories = Inventory::query()
+        $inventories = Inventory::with('category')
             ->when($this->search !== '', function ($query) {
                 $search = '%' . $this->search . '%';
 
@@ -51,8 +50,8 @@ class InventoryList extends Component
                         ->orWhere('description', 'like', $search);
                 });
             })
-            ->when($this->category !== '', function ($query) {
-                $query->where('category', $this->category);
+            ->when($this->category_id !== '', function ($query) {
+                $query->where('category_id', $this->category_id);
             })
             ->when($this->dateFrom !== '' && $this->dateTo !== '', function ($query) {
                 $query->whereBetween('created_at', [
@@ -63,13 +62,8 @@ class InventoryList extends Component
             ->orderByDesc('created_at')
             ->paginate(10);
 
-        // if categories are just strings in the column, get distinct values
-        $categories = Inventory::select('category')
-            ->distinct()
-            ->orderBy('category')
-            ->pluck('category')
-            ->filter()
-            ->values();
+        // categories from inventories_category table
+        $categories = InventoryCategory::orderBy('name')->get();
 
         return view('livewire.inventory.inventory-list', [
             'inventories' => $inventories,

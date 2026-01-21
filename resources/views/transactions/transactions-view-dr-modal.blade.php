@@ -109,7 +109,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 15%; text-align: center;">QTY</th>
-                                <th>DESCRIPTION</th>
+                                <th class="text-center">DESCRIPTION</th>
                             </tr>
                         </thead>
                         <tbody>

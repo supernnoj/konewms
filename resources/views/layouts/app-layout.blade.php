@@ -440,6 +440,7 @@
     </script>
     {{-- @include('alerts.swal-alerts') --}}
     @include('transactions.transactions-alert')
+    @include('inventory.inventory-alert')
     @livewireScripts
     @stack('scripts')
 </body>
