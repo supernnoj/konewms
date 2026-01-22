@@ -1,5 +1,6 @@
 <div>
     @include('inventory.inventory-filters-modal')
+    @include('inventory.inventory-view-item-modal')
 
     <div class="card card-border-color card-border-color-primary" id="inventory-list">
         <div class="card-header card-header-divider">
@@ -62,7 +63,7 @@
                     </thead>
                     <tbody>
                         @forelse($inventories as $inventory)
-                            <tr>
+                            <tr style="cursor:pointer;" wire:click="openViewInventoryModal({{ $inventory->id }})">
                                 {{-- <td>{{ $inventory->id }}</td> --}}
                                 <td class="text-center">{{ $inventories->firstItem() + $loop->index }}</td>
                                 <td>{{ $inventory->part_no }}</td>

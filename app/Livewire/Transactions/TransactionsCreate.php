@@ -132,8 +132,8 @@ class TransactionsCreate extends Component
         $this->searchResults = Inventory::query()
             ->where(function ($q) use ($term) {
                 $q->where('part_no', 'like', "%{$term}%")
-                    ->orWhere('description', 'like', "%{$term}%")
-                    ->orWhere('category', 'like', "%{$term}%");
+                    ->orWhere('description', 'like', "%{$term}%");
+                // ->orWhere('category', 'like', "%{$term}%");
             })
             ->orderBy('part_no')
             ->limit(15)

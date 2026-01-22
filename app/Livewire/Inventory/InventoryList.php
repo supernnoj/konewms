@@ -23,6 +23,20 @@ class InventoryList extends Component
     public $dateFrom = '';
     public $dateTo = '';
 
+    // item modal properties
+    public ?int $viewInventoryId = null;
+    public string $view_part_no = '';
+    public string $view_description = '';
+    public string $view_category = '';
+    public int $view_quantity = 0;
+    public string $view_uom = '';
+    public string $view_location = '';
+
+    // edit
+    public bool $isEditing = false;
+    public bool $isReplenishing = false;
+    public ?int $replenishAmount = null;
+
     public function submitFilters()
     {
         $this->search = $this->searchInput;
@@ -54,6 +68,95 @@ class InventoryList extends Component
         }
 
         return $count;
+    }
+
+    protected function loadInventory(int $inventoryId): void
+    {
+        $inventory = Inventory::with('category')->findOrFail($inventoryId);
+
+        $this->viewInventoryId = $inventory->id;
+        $this->view_part_no = $inventory->part_no;
+        $this->view_description = $inventory->description;
+        $this->view_category = $inventory->category->name ?? 'Null';
+        $this->view_quantity = (int) $inventory->quantity;
+        $this->view_uom = $inventory->unit_of_measurement ?? 'Null';
+        $this->view_location = $inventory->location ?? 'Null';
+    }
+
+    public function openViewInventoryModal(int $inventoryId): void
+    {
+        $this->loadInventory($inventoryId);
+        $this->isEditing = false;
+
+        $this->dispatch('open-inventory-view-modal');
+    }
+
+    public function enableEdit(): void
+    {
+        $this->isEditing = true;
+        $this->isReplenishing = false;
+        $this->replenishAmount = null;
+    }
+
+    public function cancelEdit(): void
+    {
+        if ($this->viewInventoryId) {
+            $this->loadInventory($this->viewInventoryId);
+        }
+
+        $this->isEditing = false;
+    }
+
+    public function startReplenish(): void
+    {
+        $this->isReplenishing = true;
+        $this->isEditing = false;
+        $this->replenishAmount = null;
+    }
+
+    public function cancelReplenish(): void
+    {
+        $this->isReplenishing = false;
+        $this->replenishAmount = null;
+
+        if ($this->viewInventoryId) {
+            $this->loadInventory($this->viewInventoryId);
+        }
+    }
+
+    public function applyReplenish(): void
+    {
+        if (!$this->viewInventoryId || $this->replenishAmount === null) {
+            return;
+        }
+
+        $amount = max(0, (int) $this->replenishAmount); // no negatives
+
+        $inventory = Inventory::findOrFail($this->viewInventoryId);
+        $inventory->quantity = (int) $inventory->quantity + $amount;
+        $inventory->save();
+
+        $this->loadInventory($inventory->id);
+        $this->isReplenishing = false;
+        $this->replenishAmount = null;
+    }
+
+    public function saveInventory(): void
+    {
+        if (!$this->viewInventoryId) {
+            return;
+        }
+
+        $inventory = Inventory::findOrFail($this->viewInventoryId);
+
+        $inventory->part_no = $this->view_part_no;
+        $inventory->description = $this->view_description;
+        $inventory->unit_of_measurement = $this->view_uom;
+        $inventory->location = $this->view_location;
+        $inventory->save();
+
+        $this->loadInventory($inventory->id); // refresh from DB
+        $this->isEditing = false;
     }
 
     public function render()
