@@ -34,6 +34,9 @@ class UserManagement extends Component
     public string $role = '';
     public string $password = '';        // will default to kwms2026
 
+    public bool $isViewingUser = false; // like view mode flag
+
+
     public function submitFilters(): void
     {
         $this->search = $this->searchInput;
@@ -103,9 +106,9 @@ class UserManagement extends Component
             'role',
         ]);
 
-        $this->isEditMode = false;
+        $this->isEditMode = true;          // creating = editing
+        $this->isViewingUser = false;
         $this->password = 'kwms2026';
-        $this->role = 'user';
 
         $this->dispatch('open-user-modal');
     }
@@ -124,11 +127,18 @@ class UserManagement extends Component
         $this->email = $user->email;
         $this->employee_id = $user->employee_id;
         $this->role = $user->role ?: 'user';
-        $this->password = ''; // not shown/edited by default
+        $this->password = '';
 
-        $this->isEditMode = true;
+        $this->isEditMode = false;  // start in view mode
+        $this->isViewingUser = true;
 
         $this->dispatch('open-user-modal');
+    }
+
+    public function enableUserEdit(): void
+    {
+        $this->resetValidation();
+        $this->isEditMode = true;
     }
 
     public function saveUser(): void
