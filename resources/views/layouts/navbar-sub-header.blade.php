@@ -48,10 +48,10 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item parent"><a class="nav-link" href="#" role="button"
+                    <li class="nav-item parent {{ request()->routeIs(patterns: ['users.list']) ? 'open section-active' : '' }}"><a class="nav-link" href="#" role="button"
                             aria-expanded="false"><span class="icon mdi mdi-settings"></span><span>System</span></a>
                         <ul class="be-nav-tabs-sub be-sub-nav nav">
-                            <li class="nav-item"><a class="nav-link" href="tables-general.html"><span
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('users.list') ? 'active' : '' }}" href="{{ route('users.list') }}"><span
                                         class="icon mdi mdi-key"></span><span class="name">User Management</span></a>
                             </li>
                         </ul>

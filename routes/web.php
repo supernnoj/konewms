@@ -28,3 +28,7 @@ Route::get('/transactions/create', function () {
 })->name('transactions.create');
 
 Route::get('/transaction/{id}/pdf', [TransactionDeliveryReceipt::class, 'show'])->name('transaction.delivery-receipt');
+
+Route::get('/system/users', function () {
+    return view('system.users.user-management');
+})->name('users.list');
