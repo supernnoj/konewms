@@ -22,7 +22,7 @@ class InventoryCreate extends Component
     protected function rules(): array
     {
         return [
-            'part_no' => 'required|string|max:191',
+            'part_no' => 'required|string|max:191|unique:inventories,part_no',
             'description' => 'required|string|max:500',
             'category_id' => 'nullable|exists:inventories_category,id',
             'quantity' => 'required|integer|min:0',
@@ -31,17 +31,16 @@ class InventoryCreate extends Component
         ];
     }
 
+    protected $messages = [
+        'part_no.required' => 'This is a required field.',
+        'part_no.unique' => 'Already existing.',
+    ];
+
     public function mount()
     {
         $this->categories = InventoryCategory::orderBy('name')->get();
 
-        $this->locationSuggestions = Inventory::select('location')
-            ->whereNotNull('location')
-            ->where('location', '!=', '')
-            ->distinct()
-            ->orderBy('location')
-            ->pluck('location')
-            ->toArray();
+        $this->locationSuggestions = Inventory::select('location')->whereNotNull('location')->where('location', '!=', '')->distinct()->orderBy('location')->pluck('location')->toArray();
     }
 
     public function save()

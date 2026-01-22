@@ -35,22 +35,29 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Part no.</label>
-                                    <input type="text" class="form-control" placeholder="e.g. PN-123"
-                                        wire:model.defer="part_no">
+                                    <label for="part_no">Part no. <span class="text-danger">*</span></label>
+                                    <input id="part_no" name="part_no" type="text" class="form-control"
+                                        data-parsley-trigger="change" data-parsley-pattern="^[A-Za-z0-9\-]+$"
+                                        placeholder="e.g. PN-123" wire:model.defer="part_no">
+
                                     @error('part_no')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <div class="parsley-errors-list filled mt-1">
+                                            {{ $message }}
+                                        </div>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <label>Description</label>
-                                    <input type="text" class="form-control"
+                                    <label>Description <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" data-parsley-trigger="change"
+                                        data-parsley-pattern="^[A-Za-z0-9\-]+$"
                                         placeholder="Short description of the item" wire:model.defer="description">
                                     @error('description')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <div class="parsley-errors-list filled mt-1">
+                                            This is a required field.
+                                        </div>
                                     @enderror
                                 </div>
                             </div>
@@ -62,6 +69,7 @@
                                     <label>Category</label>
                                     <div wire:ignore>
                                         <select id="category_select" class="select2 form-control" style="width: 100%;"
+                                            data-parsley-trigger="change" data-parsley-pattern="^[A-Za-z0-9\-]+$"
                                             data-placeholder="Select category">
                                             <option value="">Select category</option>
                                             @foreach ($categories as $cat)
@@ -72,18 +80,23 @@
                                         </select>
                                     </div>
                                     @error('category_id')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <div class="parsley-errors-list filled mt-1">
+                                            This is a required field.
+                                        </div>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label>Qty</label>
-                                    <input type="number" min="0" class="form-control" placeholder="0"
-                                        wire:model.defer="quantity">
+                                    <label>Qty <span class="text-danger">*</span></label>
+                                    <input type="number" min="0" class="form-control"
+                                        data-parsley-trigger="change" data-parsley-pattern="^[A-Za-z0-9\-]+$"
+                                        placeholder="0" wire:model.defer="quantity">
                                     @error('quantity')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <div class="parsley-errors-list filled mt-1">
+                                            This is a required field.
+                                        </div>
                                     @enderror
                                 </div>
                             </div>
@@ -91,10 +104,13 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Unit of Measurement</label>
-                                    <input type="text" class="form-control" placeholder="e.g. pcs, m, kg"
+                                    <input type="text" class="form-control" data-parsley-trigger="change"
+                                        data-parsley-pattern="^[A-Za-z0-9\-]+$" placeholder="e.g. pcs, m, kg"
                                         wire:model.defer="unit_of_measurement">
                                     @error('unit_of_measurement')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <div class="parsley-errors-list filled mt-1">
+                                            This is a required field.
+                                        </div>
                                     @enderror
                                 </div>
                             </div>
@@ -103,7 +119,8 @@
                                 <div class="form-group">
                                     <label>Location</label>
                                     <div wire:ignore>
-                                        <select id="location_tags" class="tags form-control location-select2">
+                                        <select id="location_tags" class="tags form-control location-select2"
+                                            data-parsley-trigger="change" data-parsley-pattern="^[A-Za-z0-9\-]+$">
                                             <option value="" selected disabled hidden>Select or input location
                                             </option>
 
@@ -116,7 +133,9 @@
                                         <P></P>
                                     </div>
                                     @error('location')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <div class="parsley-errors-list filled mt-1">
+                                            This is a required field.
+                                        </div>
                                     @enderror
                                 </div>
                             </div>
