@@ -53,14 +53,23 @@
                             </div>
 
                             @if ($isEditing)
-                                <input type="text" class="form-control text-center" style="max-width: 180px;"
-                                    wire:model.defer="view_part_no">
+                                <input type="text"
+                                    class="form-control text-center @error('view_part_no') is-invalid @enderror"
+                                    style="max-width: 180px;" wire:model.defer="view_part_no"
+                                    data-parsley-trigger="change"
+                                    data-parsley-error-message="{{ $errors->first('view_part_no') }}">
+                                @error('view_part_no')
+                                    <div class="parsley-errors-list filled mt-1">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             @else
                                 <div style="font-size:32px; font-weight:600;">
                                     {{ $view_part_no }}
                                 </div>
                             @endif
                         </div>
+
 
                         {{-- Description --}}
                         <div class="col-4 d-flex flex-column align-items-center">

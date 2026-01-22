@@ -6,6 +6,7 @@ use App\Models\Inventory;
 use App\Models\InventoryCategory;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Validation\Rule;
 
 class InventoryList extends Component
 {
@@ -86,6 +87,7 @@ class InventoryList extends Component
     public function openViewInventoryModal(int $inventoryId): void
     {
         $this->loadInventory($inventoryId);
+        $this->resetValidation();
         $this->isEditing = false;
 
         $this->dispatch('open-inventory-view-modal');
@@ -96,6 +98,7 @@ class InventoryList extends Component
         $this->isEditing = true;
         $this->isReplenishing = false;
         $this->replenishAmount = null;
+        $this->resetValidation();
     }
 
     public function cancelEdit(): void
@@ -149,6 +152,23 @@ class InventoryList extends Component
             return;
         }
 
+        // 1) Validate fields
+        $this->validate([
+            'view_part_no' => [
+                'required',
+                'string',
+                'max:191',
+                Rule::unique('inventories', 'part_no')->ignore($this->viewInventoryId),
+            ],
+            'view_description' => ['required', 'string', 'max:500'],
+            'view_uom' => ['nullable', 'string', 'max:191'],
+            'view_location' => ['nullable', 'string', 'max:191'],
+        ], [
+            'view_part_no.required' => 'This is a required field.',
+            'view_part_no.unique' => 'Already existing.',
+        ]);
+
+        // 2) Save if valid
         $inventory = Inventory::findOrFail($this->viewInventoryId);
 
         $inventory->part_no = $this->view_part_no;
@@ -157,7 +177,7 @@ class InventoryList extends Component
         $inventory->location = $this->view_location;
         $inventory->save();
 
-        $this->loadInventory($inventory->id); // refresh from DB
+        $this->loadInventory($inventory->id);
         $this->isEditing = false;
 
         $this->dispatch('inventory:edit-success');
