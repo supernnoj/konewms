@@ -139,6 +139,8 @@ class InventoryList extends Component
         $this->loadInventory($inventory->id);
         $this->isReplenishing = false;
         $this->replenishAmount = null;
+
+        $this->dispatch('inventory:replenish-success');
     }
 
     public function saveInventory(): void
@@ -157,6 +159,8 @@ class InventoryList extends Component
 
         $this->loadInventory($inventory->id); // refresh from DB
         $this->isEditing = false;
+
+        $this->dispatch('inventory:edit-success');
     }
 
     public function render()
