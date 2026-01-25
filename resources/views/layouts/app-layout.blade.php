@@ -63,7 +63,6 @@
             background-color: #1450f5;
             border-color: #1450f5;
         }
-        
     </style>
 
     @livewireStyles
@@ -406,6 +405,7 @@
     <script src="{{ asset('assets/js/app-megamenu.js') }}" type="text/javascript"></script>
     {{-- <script src="{{ asset('assets/lib/sweetalert2/sweetalert2.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/app-ui-sweetalert2.js') }}" type="text/javascript"></script> --}}
+    <script src="{{ asset('assets/lib/jquery-ui/jquery-ui.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/lib/jquery.nestable/jquery.nestable.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/lib/moment.js/min/moment.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript">

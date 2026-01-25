@@ -14,7 +14,7 @@
                         <ul class="be-nav-tabs-sub be-sub-nav nav">
                             <li class="nav-item"><a
                                     class="nav-link {{ request()->routeIs('dashboard.kpi') ? 'active' : '' }}"
-                                    href="{{ route('dashboard.kpi') }}" wire:navigate><span
+                                    href="{{ route('dashboard.kpi') }}"><span
                                         class="icon mdi mdi-trending-up"></span><span class="name">KPIs</span></a>
                         </ul>
                     </li>
@@ -28,34 +28,49 @@
                                     href="{{ route('inventory.list') }}"><span class="name"><span
                                             class="icon mdi mdi-view-list-alt"></span>List of All Items</span></a>
                             </li>
-                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('inventory.create') ? 'active' : '' }}" href="{{ route('inventory.create') }}" wire:navigate><span
-                                        class="name"><span class="icon mdi mdi-plus-square"></span>Add New
-                                        Item</span></a>
-                            </li>
+                            @if (Auth::user()->role == 'admin')
+                                <li class="nav-item"><a
+                                        class="nav-link {{ request()->routeIs('inventory.create') ? 'active' : '' }}"
+                                        href="{{ route('inventory.create') }}"><span class="name"><span
+                                                class="icon mdi mdi-plus-square"></span>Add New
+                                            Item</span></a>
+                                </li>
+                            @endif
                         </ul>
                     </li>
-                    <li class="nav-item parent {{ request()->routeIs(['transactions.create', 'transactions.list']) ? 'open section-active' : '' }}"><a class="nav-link" href="#" role="button"
-                            aria-expanded="false"><span
+                    <li
+                        class="nav-item parent {{ request()->routeIs(['transactions.create', 'transactions.list']) ? 'open section-active' : '' }}">
+                        <a class="nav-link" href="#" role="button" aria-expanded="false"><span
                                 class="icon mdi mdi-swap-vertical"></span><span>Transactions</span></a>
                         <ul class="be-nav-tabs-sub be-sub-nav nav">
-                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('transactions.list') ? 'active' : '' }}" href="{{ route('transactions.list') }}"><span
+                            <li class="nav-item"><a
+                                    class="nav-link {{ request()->routeIs('transactions.list') ? 'active' : '' }}"
+                                    href="{{ route('transactions.list') }}"><span
                                         class="icon mdi mdi-view-list-alt"></span><span class="name">List of All
                                         Transactions</span></a>
                             </li>
-                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('transactions.create') ? 'active' : '' }}" href="{{ route('transactions.create') }}"><span
+                            <li class="nav-item"><a
+                                    class="nav-link {{ request()->routeIs('transactions.create') ? 'active' : '' }}"
+                                    href="{{ route('transactions.create') }}"><span
                                         class="icon mdi mdi-plus-square"></span><span class="name">Create New
                                         Transaction</span></a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item parent {{ request()->routeIs(patterns: ['users.list']) ? 'open section-active' : '' }}"><a class="nav-link" href="#" role="button"
-                            aria-expanded="false"><span class="icon mdi mdi-settings"></span><span>System</span></a>
-                        <ul class="be-nav-tabs-sub be-sub-nav nav">
-                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('users.list') ? 'active' : '' }}" href="{{ route('users.list') }}"><span
-                                        class="icon mdi mdi-key"></span><span class="name">User Management</span></a>
-                            </li>
-                        </ul>
-                    </li>
+                    @if (Auth::user()->role == 'admin')
+                        <li
+                            class="nav-item parent {{ request()->routeIs(patterns: ['users.list']) ? 'open section-active' : '' }}">
+                            <a class="nav-link" href="#" role="button" aria-expanded="false"><span
+                                    class="icon mdi mdi-settings"></span><span>System</span></a>
+                            <ul class="be-nav-tabs-sub be-sub-nav nav">
+                                <li class="nav-item"><a
+                                        class="nav-link {{ request()->routeIs('users.list') ? 'active' : '' }}"
+                                        href="{{ route('users.list') }}"><span class="icon mdi mdi-key"></span><span
+                                            class="name">User Management</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </nav>

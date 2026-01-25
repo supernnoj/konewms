@@ -12,6 +12,7 @@ class Cart extends Model
     protected $fillable = [
         'transaction_id',
         'inventory_id',
+        'before_qty',
         'release_qty',
         'deleted_by',
         'reason_for_delete',

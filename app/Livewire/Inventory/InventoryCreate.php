@@ -11,13 +11,39 @@ class InventoryCreate extends Component
 {
     public string $part_no = '';
     public string $description = '';
-    public ?int $category_id = null;
+    public $category_id = null; // let Livewire cast
     public ?int $quantity = null;
     public string $location = '';
     public array $locationSuggestions = [];
+    public array $filteredLocationSuggestions = [];
+    public bool $showLocationSuggestions = false;
     public string $unit_of_measurement = '';
 
     public $categories;
+    public function updatedLocation()
+    {
+        $query = trim($this->location);
+
+        if ($query === '') {
+            $this->filteredLocationSuggestions = [];
+            $this->showLocationSuggestions = false;
+            return;
+        }
+
+        $this->filteredLocationSuggestions = collect($this->locationSuggestions)
+            ->filter(fn($loc) => stripos($loc, $query) !== false)
+            ->take(10)
+            ->values()
+            ->toArray();
+
+        $this->showLocationSuggestions = count($this->filteredLocationSuggestions) > 0;
+    }
+
+    public function selectLocationSuggestion(string $value)
+    {
+        $this->location = $value;
+        $this->showLocationSuggestions = false;
+    }
 
     protected function rules(): array
     {
@@ -41,10 +67,13 @@ class InventoryCreate extends Component
         $this->categories = InventoryCategory::orderBy('name')->get();
 
         $this->locationSuggestions = Inventory::select('location')->whereNotNull('location')->where('location', '!=', '')->distinct()->orderBy('location')->pluck('location')->toArray();
+
     }
 
     public function save()
     {
+        // dd($this->category_id, $this->location);
+
         $this->validate();
 
         Inventory::create([

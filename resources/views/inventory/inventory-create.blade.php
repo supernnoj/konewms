@@ -10,9 +10,9 @@
 @endsection
 
 @section('main-content')
-<div class="row">
-    <div class="col-12">
-        <livewire:inventory.inventory-create />
+    <div class="row">
+        <div class="col-12">
+            <livewire:inventory.inventory-create />
+        </div>
     </div>
-</div>
 @endsection

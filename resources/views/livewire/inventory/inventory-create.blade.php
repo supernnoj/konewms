@@ -68,22 +68,15 @@
                                 <div class="form-group">
                                     <label>Category</label>
                                     <div wire:ignore>
-                                        <select id="category_select" class="select2 form-control" style="width: 100%;"
-                                            data-parsley-trigger="change" data-parsley-pattern="^[A-Za-z0-9\-]+$"
-                                            data-placeholder="Select category">
+                                        <select id="category_select" class="form-control" style="width: 100%;"
+                                            wire:model.live="category_id">
                                             <option value="">Select category</option>
                                             @foreach ($categories as $cat)
-                                                <option value="{{ $cat->id }}" @selected($cat->id == $category_id)>
-                                                    {{ $cat->name }}
-                                                </option>
+                                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    @error('category_id')
-                                        <div class="parsley-errors-list filled mt-1">
-                                            This is a required field.
-                                        </div>
-                                    @enderror
+
                                 </div>
                             </div>
 
@@ -116,29 +109,31 @@
                             </div>
 
                             <div class="col-md-3">
-                                <div class="form-group">
+                                <div class="form-group" wire:ignore.self>
                                     <label>Location</label>
-                                    <div wire:ignore>
-                                        <select id="location_tags" class="tags form-control location-select2"
-                                            data-parsley-trigger="change" data-parsley-pattern="^[A-Za-z0-9\-]+$">
-                                            <option value="" selected disabled hidden>Select or input location
-                                            </option>
+                                    <input type="text" class="form-control" placeholder="Type location"
+                                        wire:model.live="location" autocomplete="off">
 
-                                            @foreach ($locationSuggestions as $loc)
-                                                <option value="{{ $loc }}" @selected($loc === $location)>
-                                                    {{ $loc }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <P></P>
-                                    </div>
                                     @error('location')
                                         <div class="parsley-errors-list filled mt-1">
                                             This is a required field.
                                         </div>
                                     @enderror
+
+                                    @if ($showLocationSuggestions && count($filteredLocationSuggestions))
+                                        <div class="list-group mt-1"
+                                            style="max-height: 200px; overflow-y:auto; position: absolute; z-index: 1000; width:100%;">
+                                            @foreach ($filteredLocationSuggestions as $suggestion)
+                                                <button type="button" class="list-group-item list-group-item-action"
+                                                    wire:click="selectLocationSuggestion('{{ addslashes($suggestion) }}')">
+                                                    {{ $suggestion }}
+                                                </button>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
+
 
                         </div>
 
@@ -152,74 +147,5 @@
             </div>
         </div>
     </div>
-
-    @push('scripts')
-        <script data-navigate-once>
-            function initCategorySelect() {
-                const $el = $('#category_select');
-                if (!$el.length) return;
-
-                if (!$el.hasClass('select2-hidden-accessible')) {
-                    $el.select2({
-                        theme: 'bootstrap',
-                        width: '100%',
-                        placeholder: $el.data('placeholder') || 'Select category',
-                        allowClear: true,
-                    });
-                }
-
-                // push value to Livewire when changed
-                $el.off('change.category').on('change.category', function() {
-                    const value = $(this).val() || '';
-                    const component = Livewire.find(
-                        document.querySelector('[wire\\:id]').getAttribute('wire:id')
-                    );
-                    component.set('category_id', value);
-                });
-            }
-
-            document.addEventListener('livewire:load', () => {
-                initCategorySelect();
-
-                Livewire.hook('message.processed', () => {
-                    initCategorySelect();
-                });
-            });
-        </script>
-    @endpush
-
-    @push('scripts')
-        <script data-navigate-once>
-            function initLocationTags() {
-                const $el = $('#location_tags');
-                if (!$el.length) return;
-
-                if (!$el.hasClass('select2-hidden-accessible')) {
-                    $el.select2({
-                        theme: 'bootstrap',
-                        tags: true, // allow new values
-                        width: '100%',
-                        placeholder: 'Select or type location',
-                    });
-                }
-
-                $el.off('change.location').on('change.location', function() {
-                    const value = $(this).val() || ''; // single value now
-                    const component = Livewire.find(
-                        document.querySelector('[wire\\:id]').getAttribute('wire:id')
-                    );
-                    component.set('location', value);
-                });
-            }
-
-            document.addEventListener('livewire:load', () => {
-                initLocationTags();
-                Livewire.hook('message.processed', () => {
-                    initLocationTags();
-                });
-            });
-        </script>
-    @endpush
-
 
 </div>

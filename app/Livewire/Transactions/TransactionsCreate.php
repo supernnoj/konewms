@@ -131,8 +131,7 @@ class TransactionsCreate extends Component
 
         $this->searchResults = Inventory::query()
             ->where(function ($q) use ($term) {
-                $q->where('part_no', 'like', "%{$term}%")
-                    ->orWhere('description', 'like', "%{$term}%");
+                $q->where('part_no', 'like', "%{$term}%")->orWhere('description', 'like', "%{$term}%");
                 // ->orWhere('category', 'like', "%{$term}%");
             })
             ->orderBy('part_no')
@@ -214,28 +213,24 @@ class TransactionsCreate extends Component
             $transactionId = $transaction->id;
 
             foreach ($this->cartItems as $item) {
+                $inventory = Inventory::find($item['id']);
+
+                if (!$inventory) {
+                    continue;
+                }
+
                 Cart::create([
                     'transaction_id' => $transaction->id,
                     'inventory_id' => $item['id'],
+                    'before_qty' => $inventory->quantity,        // current stock
                     'release_qty' => $item['release_qty'],
                 ]);
+
+                // subtract released quantity from inventory
+                $inventory->decrement('quantity', $item['release_qty']);
             }
 
-            $this->reset(
-                'projectSearch',
-                'project_id',
-                'project_name',
-                'project_address',
-                'equipment_number',
-                'contract_type_id',
-                'po_number',
-                'fulfillment',
-                'searchTerm',
-                'searchResults',
-                'cartItems',
-                'approver_id',
-                'approver_name'
-            );
+            $this->reset('projectSearch', 'project_id', 'project_name', 'project_address', 'equipment_number', 'contract_type_id', 'po_number', 'fulfillment', 'searchTerm', 'searchResults', 'cartItems', 'approver_id', 'approver_name');
         });
 
         $this->dispatch('close-checkout-modal');
