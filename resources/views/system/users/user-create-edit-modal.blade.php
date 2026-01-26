@@ -185,18 +185,18 @@
                                     <div class="form-control-plaintext">
                                         ••••••••
                                     </div>
-                                    <small class="form-text text-muted">
+                                    <div class="form-text text-muted" style="font-size: 10px">
                                         Click Edit to reset password.
-                                    </small>
+                                    </div>
                                 @else
                                     <input type="text" class="form-control" wire:model.defer="password">
-                                    <small class="form-text text-muted">
+                                    <div class="form-text text-muted" style="font-size: 10px">
                                         @if ($editingUserId)
                                             Leave blank to keep existing password. To reset, type a new password.
                                         @else
                                             Default password is <strong>kwms2026</strong>.
                                         @endif
-                                    </small>
+                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -211,6 +211,19 @@
                     <button type="button" class="btn btn-outline-primary px-4" wire:click="enableUserEdit">
                         Edit
                     </button>
+                    @if (is_null(optional(\App\Models\User::withTrashed()->find($editingUserId))->deleted_at))
+                        {{-- Active: show Deactivate --}}
+                        <button type="button" class="btn btn-outline-primary px-4"
+                            wire:click="confirmDeactivate({{ $editingUserId }})">
+                            Delete
+                        </button>
+                    @else
+                        {{-- Inactive: show Reactivate --}}
+                        <button type="button" class="btn btn-outline-primary px-4"
+                            wire:click="confirmReactivate({{ $editingUserId }})">
+                            Restore
+                        </button>
+                    @endif
                     <button type="button" class="btn btn-primary px-4" data-dismiss="modal">
                         Close
                     </button>

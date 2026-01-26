@@ -34,6 +34,9 @@ class UserManagement extends Component
     public string $role = '';
     public string $password = '';        // will default to kwms2026
 
+    public ?int $confirmingUserId = null;
+    public string $confirmAction = ''; // 'deactivate' or 'reactivate'
+
     public bool $isViewingUser = false; // like view mode flag
 
 
@@ -191,6 +194,38 @@ class UserManagement extends Component
 
             $this->dispatch('user:create-success');
         }
+    }
+
+    public function confirmDeactivate(int $userId): void
+    {
+        $this->confirmingUserId = $userId;
+        $this->confirmAction = 'deactivate';
+        $this->dispatch('open-confirm-modal');
+    }
+
+    public function confirmReactivate(int $userId): void
+    {
+        $this->confirmingUserId = $userId;
+        $this->confirmAction = 'reactivate';
+        $this->dispatch('open-confirm-modal');
+    }
+
+    public function performConfirm(): void
+    {
+        if (!$this->confirmingUserId || $this->confirmAction === '') {
+            return;
+        }
+
+        if ($this->confirmAction === 'deactivate') {
+            User::findOrFail($this->confirmingUserId)->delete(); // soft delete
+        } else {
+            User::withTrashed()
+                ->where('id', $this->confirmingUserId)
+                ->restore(); // restore soft deleted user
+        }
+
+        $this->reset(['confirmingUserId', 'confirmAction']);
+        $this->dispatch('close-confirm-modal');
     }
 
     public function render()

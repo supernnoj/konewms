@@ -1,6 +1,7 @@
 <div>
     @include('system.users.user-filters-modal')
     @include('system.users.user-create-edit-modal')
+    @include('system.users.user-delete-restore-modal')
 
     <div class="card card-border-color card-border-color-primary" id="user-list">
         <div class="card-header card-header-divider">
