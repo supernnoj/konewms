@@ -1,5 +1,5 @@
-<div class="modal fade" id="userModal" tabindex="-1" role="dialog"
-     aria-labelledby="userModalLabel" aria-hidden="true" wire:ignore.self>
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true"
+    wire:ignore.self>
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content border-0">
             {{-- Header --}}
@@ -10,7 +10,8 @@
                             <img src="{{ asset('assets/img/kone.png') }}" alt="KONE" style="height:40px;">
                         </td>
                         <td align="left" valign="middle">
-                            <div style="
+                            <div
+                                style="
                                 font-size:10px;
                                 color:#666;
                                 letter-spacing:2px;
@@ -20,7 +21,7 @@
                                 WAREHOUSE MONITORING SYSTEM
                             </div>
                             <div class="text-uppercase"
-                                 style="
+                                style="
                                     font-size:24px;
                                     font-weight:bold;
                                     color:#222;
@@ -61,9 +62,8 @@
                                         {{ $first_name }}
                                     </div>
                                 @else
-                                    <input type="text"
-                                           class="form-control @error('first_name') is-invalid @enderror"
-                                           wire:model.defer="first_name">
+                                    <input type="text" class="form-control @error('first_name') is-invalid @enderror"
+                                        wire:model.defer="first_name">
                                     @error('first_name')
                                         <div class="parsley-errors-list filled mt-1">{{ $message }}</div>
                                     @enderror
@@ -82,8 +82,8 @@
                                     </div>
                                 @else
                                     <input type="text"
-                                           class="form-control @error('middle_name') is-invalid @enderror"
-                                           wire:model.defer="middle_name">
+                                        class="form-control @error('middle_name') is-invalid @enderror"
+                                        wire:model.defer="middle_name">
                                     @error('middle_name')
                                         <div class="parsley-errors-list filled mt-1">{{ $message }}</div>
                                     @enderror
@@ -101,9 +101,8 @@
                                         {{ $last_name }}
                                     </div>
                                 @else
-                                    <input type="text"
-                                           class="form-control @error('last_name') is-invalid @enderror"
-                                           wire:model.defer="last_name">
+                                    <input type="text" class="form-control @error('last_name') is-invalid @enderror"
+                                        wire:model.defer="last_name">
                                     @error('last_name')
                                         <div class="parsley-errors-list filled mt-1">{{ $message }}</div>
                                     @enderror
@@ -125,8 +124,8 @@
                                     </div>
                                 @else
                                     <input type="text"
-                                           class="form-control @error('employee_id') is-invalid @enderror"
-                                           wire:model.defer="employee_id">
+                                        class="form-control @error('employee_id') is-invalid @enderror"
+                                        wire:model.defer="employee_id">
                                     @error('employee_id')
                                         <div class="parsley-errors-list filled mt-1">{{ $message }}</div>
                                     @enderror
@@ -144,9 +143,8 @@
                                         {{ $email }}
                                     </div>
                                 @else
-                                    <input type="email"
-                                           class="form-control @error('email') is-invalid @enderror"
-                                           wire:model.defer="email">
+                                    <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                        wire:model.defer="email">
                                     @error('email')
                                         <div class="parsley-errors-list filled mt-1">{{ $message }}</div>
                                     @enderror
@@ -165,7 +163,7 @@
                                     </div>
                                 @else
                                     <select class="form-control @error('role') is-invalid @enderror"
-                                            wire:model.defer="role">
+                                        wire:model.defer="role">
                                         <option value="user">User</option>
                                         <option value="admin">Admin</option>
                                     </select>
@@ -191,9 +189,7 @@
                                         Click Edit to reset password.
                                     </small>
                                 @else
-                                    <input type="text"
-                                           class="form-control"
-                                           wire:model.defer="password">
+                                    <input type="text" class="form-control" wire:model.defer="password">
                                     <small class="form-text text-muted">
                                         @if ($editingUserId)
                                             Leave blank to keep existing password. To reset, type a new password.
@@ -212,8 +208,7 @@
             <div class="modal-footer border-0 pr-4 pb-3 mr-5">
                 @if ($editingUserId && !$isEditMode)
                     {{-- View mode: Edit + Close --}}
-                    <button type="button" class="btn btn-outline-primary px-4"
-                            wire:click="enableUserEdit">
+                    <button type="button" class="btn btn-outline-primary px-4" wire:click="enableUserEdit">
                         Edit
                     </button>
                     <button type="button" class="btn btn-primary px-4" data-dismiss="modal">
@@ -221,7 +216,7 @@
                     </button>
                 @else
                     {{-- Create or edit mode: Cancel + Save --}}
-                    <button type="button" class="btn btn-outline-primary px-4" data-dismiss="modal">
+                    <button type="button" class="btn btn-outline-primary px-4" wire:click="cancelEdit">
                         Cancel
                     </button>
                     <button type="button" class="btn btn-primary px-4" wire:click="saveUser">

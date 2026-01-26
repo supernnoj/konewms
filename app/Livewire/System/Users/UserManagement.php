@@ -141,6 +141,13 @@ class UserManagement extends Component
         $this->isEditMode = true;
     }
 
+    public function cancelEdit()
+    {
+        $this->isEditMode = false; // revert to view mode (shows plaintext fields)
+        // form fields already have original data from mount() or loadUser()
+        // no need to restore - they're unchanged in view mode
+    }
+
     public function saveUser(): void
     {
         $this->syncFullName();
