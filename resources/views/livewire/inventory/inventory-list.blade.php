@@ -53,10 +53,10 @@
                             {{-- <th style="width: 70px;">ID</th> --}}
                             <th class="text-center" style="width: 40px;">#</th>
                             <th style="width: 140px;">Part No.</th>
-                            <th>Description</th>
+                            <th style="width: 140px;">Description</th>
                             <th style="width: 140px;">Category</th>
                             <th class="text-center" style="width: 120px;">Qty</th>
-                            <th class="text-center" style="width: 120px;">UoM</th>
+                            {{-- <th class="text-center" style="width: 120px;">UoM</th> --}}
                             <th style="width: 140px;">Location</th>
                             {{-- <th style="width: 180px;">Created at</th> --}}
                         </tr>
@@ -69,8 +69,13 @@
                                 <td>{{ $inventory->part_no }}</td>
                                 <td>{{ $inventory->description }}</td>
                                 <td>{{ $inventory->category->name ?? 'Null' }}</td>
-                                <td class="text-center">{{ $inventory->quantity }}</td>
-                                <td class="text-center">{{ $inventory->unit_of_measurement ?? 'Null' }}</td>
+                                <td class="text-center">
+                                    <div>
+                                        {{ $inventory->quantity }} <span class="text-lowercase">{{ $inventory->unit_of_measurement ?? 'Null' }}</span>
+                                    </div>
+                                    <div class="text-muted" style="font-size: 11px;">Threshold: {{ $inventory->threshold ?? '—' }}</div>
+                                </td>
+                                {{-- <td class="text-center">{{ $inventory->unit_of_measurement ?? 'Null' }}</td> --}}
                                 <td>{{ $inventory->location ?? 'Null' }}</td>
                                 {{-- <td>
                                     {{ $inventory->created_at ? $inventory->created_at->format('F j, Y h:i A') : 'N/A' }}

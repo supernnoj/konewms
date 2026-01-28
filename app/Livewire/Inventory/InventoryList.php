@@ -29,7 +29,9 @@ class InventoryList extends Component
     public string $view_part_no = '';
     public string $view_description = '';
     public string $view_category = '';
+    public ?int $view_category_id = null;
     public int $view_quantity = 0;
+    public ?int $view_threshold = null;
     public string $view_uom = '';
     public string $view_location = '';
 
@@ -79,7 +81,9 @@ class InventoryList extends Component
         $this->view_part_no = $inventory->part_no;
         $this->view_description = $inventory->description;
         $this->view_category = $inventory->category->name ?? 'Null';
+        $this->view_category_id = $inventory->category_id;
         $this->view_quantity = (int) $inventory->quantity;
+        $this->view_threshold = $inventory->threshold;
         $this->view_uom = $inventory->unit_of_measurement ?? 'Null';
         $this->view_location = $inventory->location ?? 'Null';
     }
@@ -163,9 +167,11 @@ class InventoryList extends Component
             'view_description' => ['required', 'string', 'max:500'],
             'view_uom' => ['nullable', 'string', 'max:191'],
             'view_location' => ['nullable', 'string', 'max:191'],
+            'view_threshold' => ['nullable', 'integer', 'min:0'],
         ], [
             'view_part_no.required' => 'This is a required field.',
             'view_part_no.unique' => 'Already existing.',
+            'view_category_id.required' => 'Category is required.',
         ]);
 
         // 2) Save if valid
@@ -173,6 +179,8 @@ class InventoryList extends Component
 
         $inventory->part_no = $this->view_part_no;
         $inventory->description = $this->view_description;
+        $inventory->category_id = $this->view_category_id;
+        $inventory->threshold = $this->view_threshold;
         $inventory->unit_of_measurement = $this->view_uom;
         $inventory->location = $this->view_location;
         $inventory->save();

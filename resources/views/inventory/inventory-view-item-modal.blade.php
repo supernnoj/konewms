@@ -87,7 +87,26 @@
                             @endif
                         </div>
 
-                        <div class="col-4"></div>
+                        {{-- Category --}}
+                        <div class="col-4 d-flex flex-column align-items-center">
+                            <div class="text-uppercase mb-1" style="font-size:11px; letter-spacing:1px; color:#777;">
+                                Category
+                            </div>
+
+                            @if ($isEditing)
+                                <select class="form-control text-center" style="max-width: 180px;"
+                                    wire:model.defer="view_category_id">
+                                    <option value="">Select category</option>
+                                    @foreach ($categories as $cat)
+                                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                    @endforeach
+                                </select>
+                            @else
+                                <div style="font-size:16px;">
+                                    {{ $view_category }}
+                                </div>
+                            @endif
+                        </div>
                     </div>
 
 
@@ -151,6 +170,38 @@
                             <div class="mt-2 text-uppercase" style="font-size:11px; letter-spacing:1px; color:#777;">
                                 Location
                             </div>
+                        </div>
+                    </div>
+
+                     <hr class="my-4" style="border-top:1px solid #eee;">
+
+
+                    {{-- Row 3: threshold --}}
+                    <div class="row text-center align-items-end mt-3">
+                        <div class="col-12 d-flex flex-column align-items-start">
+                            @if ($isEditing)
+                                <div style="max-width: 200px; width: 100%;">
+                                    <label class="text-uppercase mb-1"
+                                        style="font-size:11px; letter-spacing:1px; color:#777;">
+                                        Threshold
+                                    </label>
+                                    <input type="number" min="0"
+                                        class="form-control text-center @error('view_threshold') is-invalid @enderror"
+                                        wire:model.defer="view_threshold">
+                                    @error('view_threshold')
+                                        <div class="parsley-errors-list filled mt-1">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            @else
+                                <div style="font-size:12px; color:#999;">
+                                    Threshold:
+                                    <span style="font-weight:600;">
+                                        {{ $view_threshold !== null ? $view_threshold : '—' }}
+                                    </span>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

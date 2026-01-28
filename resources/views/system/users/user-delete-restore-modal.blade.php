@@ -4,7 +4,7 @@
         <div class="modal-content bg-primary">
             <div class="modal-header"></div>
             <div class="modal-body text-center">
-                <div class="text-center text-white"><span class="modal-main-icon mdi mdi-info"></span>
+                <div class="text-center text-white"><span class="modal-main-icon mdi mdi-delete"></span>
                     <h3>
                         @if ($confirmAction === 'deactivate')
                             Delete
