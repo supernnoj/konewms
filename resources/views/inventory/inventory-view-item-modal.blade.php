@@ -42,7 +42,7 @@
             <hr class="mt-0 mb-0" style="border-top:1px solid #eee;">
 
             {{-- Body --}}
-            <div class="modal-body pb-4 pt-4 mt-5 mb-4">
+            <div class="modal-body pb-4 pt-4 mt-5">
                 <div class="container" style="max-width: 720px;">
                     {{-- Row 1: Part No + Description --}}
                     <div class="row mb-4 text-center">
@@ -173,17 +173,31 @@
                         </div>
                     </div>
 
-                     <hr class="my-4" style="border-top:1px solid #eee;">
+                    {{-- <hr class="my-4" style="border-top:1px solid #eee;"> --}}
 
+                    {{-- threshold --}}
+                    @if (!$isEditing)
+                        <div class="mt-3">&nbsp;</div>
+                        <div class="d-flex align-items-center my-3 mt-7">
+                            <div class="flex-grow-1 border-top" style="border-top-color: #e0e0e0;"></div>
+                            <span class="px-2"
+                                style="font-size: 11px; text-transform: uppercase; letter-spacing: .08em;">
+                                STOCK MINIMUM THRESHOLD: <span
+                                    class="font-weight-bold">{{ $view_threshold !== null ? $view_threshold : '—' }}</span>
+                            </span>
+                            <div class="flex-grow-1 border-top" style="border-top-color: #e0e0e0;"></div>
+                        </div>
+                    @endif
 
                     {{-- Row 3: threshold --}}
-                    <div class="row text-center align-items-end mt-3">
-                        <div class="col-12 d-flex flex-column align-items-start">
-                            @if ($isEditing)
+                    @if ($isEditing)
+                        <hr class="my-4" style="border-top:1px solid #eee;">
+                        <div class="row text-center align-items-end mt-3">
+                            <div class="col-12 d-flex flex-column align-items-center">
                                 <div style="max-width: 200px; width: 100%;">
                                     <label class="text-uppercase mb-1"
                                         style="font-size:11px; letter-spacing:1px; color:#777;">
-                                        Threshold
+                                        Set Stock Threshold
                                     </label>
                                     <input type="number" min="0"
                                         class="form-control text-center @error('view_threshold') is-invalid @enderror"
@@ -194,16 +208,11 @@
                                         </div>
                                     @enderror
                                 </div>
-                            @else
-                                <div style="font-size:12px; color:#999;">
-                                    Threshold:
-                                    <span style="font-weight:600;">
-                                        {{ $view_threshold !== null ? $view_threshold : '—' }}
-                                    </span>
-                                </div>
-                            @endif
+
+                            </div>
                         </div>
-                    </div>
+                    @else
+                    @endif
                 </div>
             </div>
 
