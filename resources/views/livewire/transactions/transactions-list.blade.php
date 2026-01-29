@@ -17,7 +17,8 @@
                             <span class="input-group-text">
                                 <i class="mdi mdi-search"></i>
                             </span>
-                            <input type="text" class="form-control" placeholder="Search by DR No., Project Name, PO No., or Equipment No."
+                            <input type="text" class="form-control"
+                                placeholder="Search by DR No., Project Name, PO No., or Equipment No."
                                 wire:model="searchInput">
                             <button type="submit" class="btn btn-primary">Search</button>
                         </div>
@@ -63,18 +64,18 @@
                         @forelse($transactions as $transaction)
                             <tr style="cursor:pointer;" wire:click="openViewDrModal({{ $transaction->id }})">
                                 <td class="text-center">{{ str_pad($transaction->id, 4, '0', STR_PAD_LEFT) }}</td>
-                                <td>{{ $transaction->project->name }}</td>
-                                <td class="text-center">{{ $transaction->contractType->name ?? 'Null' }}</td>
-                                <td class="text-center">{{ $transaction->po_number }}</td>
-                                <td class="text-center">{{ $transaction->equipment_number }}</td>
+                                <td>{{ $transaction->project->name ?? '-' }}</td>
+                                <td class="text-center">{{ $transaction->contractType->name ?? '-' }}</td>
+                                <td class="text-center">{{ $transaction->po_number ?? '-' }}</td>
+                                <td class="text-center">{{ $transaction->equipment_number ?? '-' }}</td>
                                 <td>
-                                    <div>{{ $transaction->createdBy->name ?? 'Null' }}</div>
+                                    <div>{{ $transaction->createdBy->name ?? '-' }}</div>
                                     <div class="text-muted" style="font-size: 11px;">
                                         {{ $transaction->created_at->format('F j, Y h:i A') }}
                                     </div>
                                 </td>
                                 <td>
-                                    <div>{{ $transaction->approver?->name ?? 'Null' }}</div>
+                                    <div>{{ $transaction->approver?->name ?? '-' }}</div>
                                     <div class="text-muted" style="font-size: 11px;">
                                         {{ $transaction->created_at->format('F j, Y h:i A') }}
                                     </div>

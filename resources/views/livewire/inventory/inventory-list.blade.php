@@ -73,7 +73,7 @@
                                     <div>
                                         {{ $inventory->quantity }} <span class="text-lowercase">{{ $inventory->unit_of_measurement ?? 'Null' }}</span>
                                     </div>
-                                    <div class="text-muted" style="font-size: 11px;">Threshold: {{ $inventory->threshold ?? '—' }}</div>
+                                    <div class="text-muted" style="font-size: 11px;">Minimum Threshold: {{ $inventory->threshold ?? '—' }}</div>
                                 </td>
                                 {{-- <td class="text-center">{{ $inventory->unit_of_measurement ?? 'Null' }}</td> --}}
                                 <td>{{ $inventory->location ?? 'Null' }}</td>

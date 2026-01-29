@@ -177,7 +177,7 @@
 
                     {{-- threshold --}}
                     @if (!$isEditing)
-                        <div class="mt-3">&nbsp;</div>
+                        <div class="mt-1">&nbsp;</div>
                         <div class="d-flex align-items-center my-3 mt-7">
                             <div class="flex-grow-1 border-top" style="border-top-color: #e0e0e0;"></div>
                             <span class="px-2"
