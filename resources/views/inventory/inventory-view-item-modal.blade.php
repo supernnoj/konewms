@@ -114,18 +114,18 @@
 
                     {{-- Row 2: metrics, same 3-column grid --}}
                     @php
-                                        if (is_null($view_threshold)) {
-                                            $qtyClass = '';
-                                        } elseif ($view_quantity > $view_threshold) {
-                                            $qtyClass = 'text-success';
-                                        } elseif ($view_quantity == $view_threshold) {
-                                            $qtyClass = 'text-warning';
-                                        } elseif ($view_quantity < $view_threshold) {
-                                            $qtyClass = 'text-danger';
-                                        } else {
-                                            $qtyClass = '';
-                                        }
-                                    @endphp
+                        if (is_null($view_threshold)) {
+                            $qtyClass = '';
+                        } elseif ($view_quantity > $view_threshold) {
+                            $qtyClass = 'text-success';
+                        } elseif ($view_quantity == $view_threshold) {
+                            $qtyClass = 'text-warning';
+                        } elseif ($view_quantity < $view_threshold) {
+                            $qtyClass = 'text-danger';
+                        } else {
+                            $qtyClass = '';
+                        }
+                    @endphp
                     <div class="row text-center align-items-end">
                         <div class="col-4 d-flex flex-column align-items-center">
                             @if ($isReplenishing)
@@ -142,7 +142,8 @@
                                         placeholder="Add qty" wire:model.defer="replenishAmount">
                                 </div>
                             @else
-                                <div class="{{ $qtyClass }}" style="font-size:56px; font-weight:700; line-height:1;">
+                                <div class="{{ $qtyClass }}"
+                                    style="font-size:56px; font-weight:700; line-height:1;">
                                     {{ $view_quantity }}
                                 </div>
                                 <div class="mt-2 text-uppercase"
@@ -159,7 +160,7 @@
                                 <input type="text" class="form-control text-center mb-2" style="max-width: 140px;"
                                     wire:model.defer="view_uom">
                             @else
-                                <div style="font-size:20px; font-weight:500; line-height:1;">
+                                <div class="text-uppercase" style="font-size:20px; font-weight:500; line-height:1;">
                                     {{ $view_uom }}
                                 </div>
                             @endif

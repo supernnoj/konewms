@@ -53,5 +53,10 @@ Route::middleware('auth')->group(function () {
             return view('system.users.user-management');
         })->name('users.list');
 
+        Route::get('/system/projects', function () {
+            return view('system.projects.project-management');
+        })->name('projects.list');
+
+
     });
 });

@@ -59,7 +59,7 @@
                     </li>
                     @if (Auth::user()->role == 'admin')
                         <li
-                            class="nav-item parent {{ request()->routeIs(patterns: ['users.list']) ? 'open section-active' : '' }}">
+                            class="nav-item parent {{ request()->routeIs(patterns: ['users.list', 'projects.list']) ? 'open section-active' : '' }}">
                             <a class="nav-link" href="#" role="button" aria-expanded="false"><span
                                     class="icon mdi mdi-settings"></span><span>System</span></a>
                             <ul class="be-nav-tabs-sub be-sub-nav nav">
@@ -67,6 +67,11 @@
                                         class="nav-link {{ request()->routeIs('users.list') ? 'active' : '' }}"
                                         href="{{ route('users.list') }}"><span class="icon mdi mdi-key"></span><span
                                             class="name">User Management</span></a>
+                                </li>
+                                <li class="nav-item"><a
+                                        class="nav-link {{ request()->routeIs('projects.list') ? 'active' : '' }}"
+                                        href="{{ route('projects.list') }}"><span class="icon mdi mdi-folder"></span><span
+                                            class="name">Project Management</span></a>
                                 </li>
                             </ul>
                         </li>

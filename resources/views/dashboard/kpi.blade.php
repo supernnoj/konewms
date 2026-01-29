@@ -5,7 +5,7 @@
 @endsection
 
 @section('breadcrumb-item')
-    <li class="breadcrumb-item">User</li>
+    <li class="breadcrumb-item">{{ ucfirst(Auth::user()->role) }}</li>
     <li class="breadcrumb-item">Dashboard</li>
 @endsection
 
