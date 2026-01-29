@@ -68,15 +68,17 @@
                                 <td class="text-center">{{ $inventories->firstItem() + $loop->index }}</td>
                                 <td>{{ $inventory->part_no }}</td>
                                 <td>{{ $inventory->description }}</td>
-                                <td>{{ $inventory->category->name ?? 'Null' }}</td>
+                                <td>{{ $inventory->category->name ?? '-' }}</td>
                                 <td class="text-center">
                                     <div>
-                                        {{ $inventory->quantity }} <span class="text-lowercase">{{ $inventory->unit_of_measurement ?? 'Null' }}</span>
+                                        {{ $inventory->quantity }}
+                                        <span class="text-lowercase">{{ $inventory->unit_of_measurement ?? '-' }}</span>
                                     </div>
-                                    <div class="text-muted" style="font-size: 11px;">Minimum Threshold: {{ $inventory->threshold ?? '—' }}</div>
+                                    <div class="text-muted" style="font-size: 11px;">Minimum Threshold:
+                                        {{ $inventory->threshold ?? '—' }}</div>
                                 </td>
                                 {{-- <td class="text-center">{{ $inventory->unit_of_measurement ?? 'Null' }}</td> --}}
-                                <td>{{ $inventory->location ?? 'Null' }}</td>
+                                <td>{{ $inventory->location ?? '-' }}</td>
                                 {{-- <td>
                                     {{ $inventory->created_at ? $inventory->created_at->format('F j, Y h:i A') : 'N/A' }}
                                 </td> --}}

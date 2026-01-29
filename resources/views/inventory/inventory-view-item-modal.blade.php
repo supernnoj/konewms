@@ -113,6 +113,19 @@
                     <hr class="my-4" style="border-top:1px solid #eee;">
 
                     {{-- Row 2: metrics, same 3-column grid --}}
+                    @php
+                                        if (is_null($view_threshold)) {
+                                            $qtyClass = '';
+                                        } elseif ($view_quantity > $view_threshold) {
+                                            $qtyClass = 'text-success';
+                                        } elseif ($view_quantity == $view_threshold) {
+                                            $qtyClass = 'text-warning';
+                                        } elseif ($view_quantity < $view_threshold) {
+                                            $qtyClass = 'text-danger';
+                                        } else {
+                                            $qtyClass = '';
+                                        }
+                                    @endphp
                     <div class="row text-center align-items-end">
                         <div class="col-4 d-flex flex-column align-items-center">
                             @if ($isReplenishing)
@@ -129,7 +142,7 @@
                                         placeholder="Add qty" wire:model.defer="replenishAmount">
                                 </div>
                             @else
-                                <div style="font-size:56px; font-weight:700; line-height:1;">
+                                <div class="{{ $qtyClass }}" style="font-size:56px; font-weight:700; line-height:1;">
                                     {{ $view_quantity }}
                                 </div>
                                 <div class="mt-2 text-uppercase"
@@ -183,7 +196,7 @@
                             <span class="px-2"
                                 style="font-size: 11px; text-transform: uppercase; letter-spacing: .08em;">
                                 STOCK MINIMUM THRESHOLD: <span
-                                    class="font-weight-bold">{{ $view_threshold !== null ? $view_threshold : '—' }}</span>
+                                    class="font-weight-bold">{{ $view_threshold !== null ? $view_threshold : 'Not defined' }}</span>
                             </span>
                             <div class="flex-grow-1 border-top" style="border-top-color: #e0e0e0;"></div>
                         </div>
