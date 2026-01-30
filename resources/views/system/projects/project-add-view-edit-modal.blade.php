@@ -101,18 +101,18 @@
                             Cancel
                         </button>
                         <button type="button" class="btn btn-primary" wire:click="saveProject">
-                            Save
+                            Save changes
                         </button>
                     @else
                         {{-- Pure VIEW mode --}}
-                        <button type="button" class="btn btn-outline-primary" data-dismiss="modal">
-                            Close
-                        </button>
                         @if ($viewProjectId)
-                            <button type="button" class="btn btn-primary" wire:click="enableEdit">
+                            <button type="button" class="btn btn-outline-primary" wire:click="enableEdit">
                                 Edit
                             </button>
                         @endif
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">
+                            Close
+                        </button>
                     @endif
                 @endif
             </div>
