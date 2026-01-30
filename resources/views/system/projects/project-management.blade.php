@@ -12,7 +12,7 @@
 @section('main-content')
 <div class="row">
     <div class="col-12">
-        {{-- <livewire:system.users.user-management /> --}}
+        <livewire:system.projects.project-management />
     </div>
 </div>
 @endsection
